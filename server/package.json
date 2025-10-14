@@ -1,0 +1,19 @@
+{
+  "name": "clicktrackedad-scraper",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "license": "MIT",
+  "engines": {
+    "node": "30.x"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@sparticuz/chromium": "^123.0.0",
+    "express": "^4.19.2",
+    "puppeteer": "^24.24.1",
+    "puppeteer-core": "^23.4.0"
+  }
+}
