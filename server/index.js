@@ -1,3 +1,39 @@
+// index.js
+import express from "express";
+
+const app = express();
+app.use(express.json({ limit: "1mb" }));
+
+const isLinux = process.platform === "linux";
+
+let launchBrowser;
+if (isLinux) {
+  const chromium = (await import("@sparticuz/chromium")).default;
+  const puppeteerCore = (await import("puppeteer-core")).default;
+
+  launchBrowser = async () => {
+    const executablePath = await chromium.executablePath();
+    return puppeteerCore.launch({
+      headless: true,
+      args: [...chromium.args, "--no-sandbox", "--disable-setuid-sandbox"],
+      defaultViewport: chromium.defaultViewport,
+      executablePath,
+      ignoreHTTPSErrors: true
+    });
+  };
+} else {
+  const puppeteer = (await import("puppeteer")).default;
+  launchBrowser = async () => puppeteer.launch({ headless: true });
+}
+
+async function extractFromFrame(frame) {
+  let v = await frame.evaluate(() => {
+    // @ts-ignore
+    return typeof window.clicktrackedAd_js !== "undefined" ? window.clicktrackedAd_js : null;
+  }).catch(() => n
+
+cd ~/Desktop/clicktrackedad-scraper/server
+
 cat > index.js << 'EOF'
 // index.js
 import express from "express";
@@ -152,4 +188,3 @@ app.post("/scrape", async (req, res) => {
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Scraper running on :${port}`));
-EOF
